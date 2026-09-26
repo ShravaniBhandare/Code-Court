@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+sqlalchemy
+psycopg[binary]
+pydantic-settings
+httpx
+python-dotenv
+itsdangerous
+pytest
+pytest-asyncio
