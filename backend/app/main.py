@@ -2,7 +2,7 @@ from fastapi import FastAPI
 
 
 app = FastAPI(
-    title="CodeCourt Backend",
+    title="Code-Court Backend",
     version="0.1.0",
 )
 

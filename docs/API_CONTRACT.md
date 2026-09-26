@@ -1,4 +1,4 @@
-# CodeCourt — Stage 1 API Contract
+# Code-Court — Stage 1 API Contract
 
 Frozen for Stage 1 MVP. Do not add/rename fields without both developers agreeing.
 
@@ -18,7 +18,7 @@ is attached. A `401` response means "not logged in" → redirect to `/login`.
 ```json
 {
   "repositories": [
-    { "id": 12345, "name": "CodeCourt", "owner": "rahul", "url": "https://github.com/rahul/CodeCourt" }
+    { "id": 12345, "name": "Code-Court", "owner": "rahul", "url": "https://github.com/rahul/Code-Court" }
   ]
 }
 ```
@@ -27,7 +27,7 @@ is attached. A `401` response means "not logged in" → redirect to `/login`.
 
 ```json
 {
-  "repository": { "id": 12345, "name": "CodeCourt", "owner": "rahul", "url": "https://..." },
+  "repository": { "id": 12345, "name": "Code-Court", "owner": "rahul", "url": "https://..." },
   "summary": {
     "total_commits": 127,
     "total_contributors": 4,
