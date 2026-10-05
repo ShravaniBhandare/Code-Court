@@ -66,6 +66,13 @@ class CommitService:
             if not isinstance(github_id, int) or not isinstance(username, str):
                 continue
 
+            commit_details = await self.github_service.get_repository_commit(
+                access_token=access_token,
+                owner=repository.owner,
+                repository_name=repository.name,
+                commit_sha=commit_sha,
+            )
+
             contributor = db.scalar(
                 select(Contributor).where(
                     Contributor.repository_id == repository.id,
@@ -87,7 +94,22 @@ class CommitService:
                 commit_date_value.replace("Z", "+00:00")
             )
 
-            stats = github_commit.get("stats", {})
+            stats = commit_details.get("stats", {})
+            if not isinstance(stats, dict):
+                raise RuntimeError(
+                    "GitHub commit response is missing commit statistics"
+                )
+
+            additions = stats.get("additions")
+            deletions = stats.get("deletions")
+            files_changed = stats.get("total")
+            if any(
+                not isinstance(value, int) or isinstance(value, bool) or value < 0
+                for value in (additions, deletions, files_changed)
+            ):
+                raise RuntimeError(
+                    "GitHub commit response contains invalid commit statistics"
+                )
 
             db.add(
                 Commit(
@@ -96,9 +118,9 @@ class CommitService:
                     commit_sha=commit_sha,
                     message=message,
                     commit_date=commit_date,
-                    additions=stats.get("additions", 0),
-                    deletions=stats.get("deletions", 0),
-                    files_changed=stats.get("total", 0),
+                    additions=additions,
+                    deletions=deletions,
+                    files_changed=files_changed,
                 )
             )
 

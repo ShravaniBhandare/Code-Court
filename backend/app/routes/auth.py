@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import RedirectResponse
-from itsdangerous import URLSafeSerializer
 from sqlalchemy.orm import Session
 
 from app.config.settings import get_settings
 from app.database.connection import get_db
 from app.services.github_service import GitHubService
 from app.services.user_service import UserService
+from app.utils.session import create_session_token
 
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -37,11 +37,7 @@ async def github_callback(
             detail="GitHub authentication failed",
         ) from error
 
-    serializer = URLSafeSerializer(
-        settings.session_secret,
-        salt="codecourt-session",
-    )
-    session_value = serializer.dumps({"access_token": access_token})
+    session_value = create_session_token(access_token)
 
     response = RedirectResponse(
         url=f"{settings.frontend_url}/repositories",
@@ -51,6 +47,7 @@ async def github_callback(
         key="session",
         value=session_value,
         httponly=True,
-        samesite="lax",
+        samesite="none",
+        secure=True,
     )
     return response

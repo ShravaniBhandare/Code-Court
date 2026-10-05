@@ -134,6 +134,25 @@ class GitHubService:
 
         return commits
 
+    async def get_repository_commit(
+        self,
+        access_token: str,
+        owner: str,
+        repository_name: str,
+        commit_sha: str,
+    ) -> dict[str, Any]:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(
+                f"{GITHUB_API_URL}/repos/{owner}/{repository_name}/commits/{commit_sha}",
+                headers=self._headers(access_token),
+            )
+
+        response.raise_for_status()
+        commit: Any = response.json()
+        if not isinstance(commit, dict):
+            raise ValueError("GitHub returned an invalid commit response")
+        return commit
+
     @staticmethod
     def _headers(access_token: str) -> dict[str, str]:
         return {

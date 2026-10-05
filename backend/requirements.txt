@@ -5,6 +5,6 @@ psycopg[binary]
 pydantic-settings
 httpx
 python-dotenv
-itsdangerous
+PyJWT
 pytest
 pytest-asyncio
