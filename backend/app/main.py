@@ -1,16 +1,18 @@
 """FastAPI application entry point."""
 
 from contextlib import asynccontextmanager
+import logging
+
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse, RedirectResponse
+
 from app.core.errors import (
     AnalysisNotFound, AnalysisNotReady, CloneFailed, GitHubAPIError,
     InvalidRepoURL, QueueFull, RateLimited, RepoNotFound, RepoTooLarge,
     TooManyRequests,
 )
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import RedirectResponse
 from app.config import settings
 from app.db.base import create_engine_from_url, init_db, make_session_factory
 from app.services.job_runner import JobRunner
@@ -18,7 +20,6 @@ from app.services.analysis_service import AnalysisService
 from app.services.rate_limit import SlidingWindowLimiter
 from app.api.routes_analysis import router as analysis_router
 from app.api.routes_results import router as results_router
-import logging
 
 logger = logging.getLogger(__name__)
 

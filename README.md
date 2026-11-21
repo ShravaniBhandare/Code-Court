@@ -1,40 +1,28 @@
 # CodeCourt
 
-CodeCourt analyzes a public GitHub repository and fairly scores each contributor's contribution.
+CodeCourt analyzes public GitHub repositories and scores contributor contributions with
+transparent work, survival, ownership, review, issue, and consistency signals.
 
-## Setup
+The backend provides repository ingestion, Git analysis, GitHub activity collection,
+scoring, persistence, background jobs, REST endpoints, and PDF/JSON report export.
+The frontend can be developed separately against the API.
 
-From the project root, create and activate a virtual environment:
+## Backend setup
 
 ```powershell
-python -m venv backend\.venv
-backend\.venv\Scripts\Activate.ps1
-```
-
-On macOS/Linux:
-
-```bash
-python3 -m venv backend/.venv
-source backend/.venv/bin/activate
-```
-
-Install requirements:
-
-```bash
 cd backend
+py -3.11 -m venv .venv
+.\\.venv\\Scripts\\Activate.ps1
 pip install -r requirements.txt
-```
-
-Run the server from `backend/`:
-
-```bash
+Copy-Item .env.example .env
 uvicorn app.main:app --reload
 ```
 
-Run tests from `backend/`:
+Open http://127.0.0.1:8000/docs.
 
-```bash
-pytest
+## Validation
+
+```powershell
+cd backend
+python -m pytest -q
 ```
-
-Open the API documentation at http://127.0.0.1:8000/docs.
