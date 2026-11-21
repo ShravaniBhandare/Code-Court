@@ -1,0 +1,8 @@
+{
+  "weights": {
+    "work": 0.5,
+    "survival": 0.3,
+    "ownership": 0.08
+  },
+  "scaling": "log"
+}

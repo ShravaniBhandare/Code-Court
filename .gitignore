@@ -1,0 +1,20 @@
+# Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Environment and local database
+.env
+*.db
+
+# Frontend dependencies
+node_modules/
+
+# Repository cache
+cache/*
+!cache/.gitkeep
+
+# Editors
+.idea/
